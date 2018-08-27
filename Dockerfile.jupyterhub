@@ -19,3 +19,12 @@ RUN chmod 700 /srv/jupyterhub/secrets && \
     chmod 600 /srv/jupyterhub/secrets/*
 
 COPY ./userlist /srv/jupyterhub/userlist
+
+RUN pip install jupyterhub-dummyauthenticator
+
+#Hackify custom dockerspawner into image
+ADD dockerspawner dockerspawner
+WORKDIR dockerspawner
+RUN python setup.py install
+RUN pip install -r dev-requirements.txt -e .
+WORKDIR /

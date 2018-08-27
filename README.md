@@ -1,3 +1,35 @@
+# This repo was originally cloned from https://github.com/jupyterhub/jupyterhub-deploy-docker.git 
+
+### The sole purpose of this repo is to act as a development environment for an alternative dockerspawner and for integration with Hail.is. This repo should never be merged back into https://github.com/jupyterhub/jupyterhub-deploy-docker.git which is why it is not a proper fork.
+
+# Your development workflow should be something like this:
+
+# Run the stack once to make sure things are working:
+
+make build
+docker-compose up -d
+
+### Check that the hub is running and that you can use your notebook server
+
+docker-compose down
+
+### Edit files in the dockerspawner clone that now lives under the root of this repo (it is .gitignored) to change how the spawner works.
+- This is where the Helium spawner magic will need to happen
+- We need this to handle the user's volume persistence somehow
+
+### Edit the Dockerfile in the singleuser folder to add/modify the singleuser notebook image that is launched for users.
+- This is where the Spark/Hail magic will need to happen
+- We need this to be able to run Hail jobs on remote clusters
+  
+make build
+docker-compose up -d
+  
+# Check out your changes in the running JupyterHub
+  
+================================================================
+#### Everything below this line is from the original # https://github.com/jupyterhub/jupyterhub-deploy-docker.git repo and is included for informational purposes only
+================================================================
+  
 **[Technical Overview](#technical-overview)** |
 **[Prerequisites](#prerequisites)** |
 **[Authenticator setup](#authenticator-setup)** |

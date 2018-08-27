@@ -20,8 +20,8 @@ secrets/postgres.env:
 	@echo "POSTGRES_PASSWORD=$(shell openssl rand -hex 32)" > $@
 
 secrets/oauth.env:
-	@echo "Need oauth.env file in secrets with GitHub parameters"
-	@exit 1
+#	@echo "Need oauth.env file in secrets with GitHub parameters"
+#	@exit 1
 
 secrets/jupyterhub.crt:
 	@echo "Need an SSL certificate in secrets/jupyterhub.crt"
@@ -56,7 +56,12 @@ notebook_image: pull singleuser/Dockerfile
 		--build-arg DOCKER_NOTEBOOK_IMAGE=$(DOCKER_NOTEBOOK_IMAGE) \
 		singleuser
 
-build: check-files network volumes
+dockerspawner: 
+	test -d ./dockerspawner || git clone https://github.com/hms-dbmi/dockerspawner.git
+	test -d ./dockerspawner && cd dockerspawner && git pull && cd ../
+
+build: check-files network volumes dockerspawner
 	docker-compose build
 
 .PHONY: network volumes check-files pull notebook_image build
+
